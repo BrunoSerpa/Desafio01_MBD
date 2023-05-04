@@ -1,4 +1,3 @@
-drop database bdpratica03;
 CREATE DATABASE bdpratica03;
 
 USE bdpratica03;
@@ -6,42 +5,44 @@ USE bdpratica03;
 CREATE table DEPARTAMENTO
 (
     COD_DEPART int auto_increment primary key,
-    NOME varchar(30),
+    NOME varchar(30) not null,
     DATA_INICIAL date
 );
 CREATE table PROJETO
 (
     COD_PROJ int auto_increment primary key,
     COD_DEPART int,
-    TITULO varchar(150),
+    TITULO varchar(150) not null,
     DESCRICAO varchar(252),
-    DAT_CAD date,
+    DAT_CAD date default(curdate()),
     foreign key(COD_DEPART) references DEPARTAMENTO(COD_DEPART)
 );
 
 CREATE table FUNCIONARIO
 (
-    COD_FUNC int auto_increment,
+    COD_FUNC int auto_increment primary key,
     NOME varchar (100) not null,
-    CPF char(15),
-    SALARIO decimal(4,2),
+    CPF char(15) unique,
+    SALARIO decimal(8,2),
     ENDERECO varchar(252),
     SEXO char(1),
     COD_SUPER int,
     COD_DEPART int,
     foreign key(COD_SUPER) references FUNCIONARIO(COD_FUNC),
     foreign key(COD_DEPART) references DEPARTAMENTO(COD_DEPART),
-    primary key(CPF, COD_FUNC)
-);
+    CONSTRAINT salMinimo CHECK(SALARIO > 1000.00),
+    CONSTRAINT mf CHECK(Sexo = "M" or Sexo = "F")
+); 
 
 CREATE table DEPENDENTE
 (
     COD_FUNC int,
     SEQ int auto_increment primary key,
-    NOME varchar(100),
-    PARENTESCO varchar(30),
+    NOME varchar(100) not null,
+    PARENTESCO varchar(30) not null,
     DATA_NASC date,
-    foreign key (COD_FUNC) references FUNCIONARIO(COD_FUNC)
+    foreign key (COD_FUNC) references FUNCIONARIO(COD_FUNC),
+    CONSTRAINT familia CHECK(PARENTESCO = "PAI" or PARENTESCO = "MÃE" or PARENTESCO = "IRMAOS" or PARENTESCO = "FILHO")
 );
 
 CREATE table LOCALIZACAO
@@ -54,11 +55,10 @@ CREATE table LOCALIZACAO
 
 CREATE table PARTICIPA
 (
-    COD_FUNC int,
+	COD_FUNC int,
     COD_PROJ int,
     HORAS varchar(50),
     foreign key (COD_FUNC) references FUNCIONARIO(COD_FUNC),
-    foreign key (COD_PROJ) references PROJETO(COD_PROJ)
+    foreign key (COD_PROJ) references PROJETO(COD_PROJ),
+    primary key(COD_FUNC, COD_PROJ)
 );
-
-/* select * from Participa, Localizacao, dependente, funcionario, projeto, departamento */
