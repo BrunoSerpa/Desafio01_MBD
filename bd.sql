@@ -9,7 +9,6 @@ CREATE table DEPARTAMENTO
     NOME varchar(30),
     DATA_INICIAL date
 );
-
 CREATE table PROJETO
 (
     COD_PROJ int auto_increment primary key,
@@ -22,8 +21,8 @@ CREATE table PROJETO
 
 CREATE table FUNCIONARIO
 (
-    COD_FUNC int auto_increment primary key,
-    NOME varchar (100),
+    COD_FUNC int auto_increment,
+    NOME varchar (100) not null,
     CPF char(15),
     SALARIO decimal(4,2),
     ENDERECO varchar(252),
@@ -31,7 +30,8 @@ CREATE table FUNCIONARIO
     COD_SUPER int,
     COD_DEPART int,
     foreign key(COD_SUPER) references FUNCIONARIO(COD_FUNC),
-    foreign key(COD_DEPART) references DEPARTAMENTO(COD_DEPART)
+    foreign key(COD_DEPART) references DEPARTAMENTO(COD_DEPART),
+    primary key(CPF, COD_FUNC)
 );
 
 CREATE table DEPENDENTE
@@ -58,8 +58,7 @@ CREATE table PARTICIPA
     COD_PROJ int,
     HORAS varchar(50),
     foreign key (COD_FUNC) references FUNCIONARIO(COD_FUNC),
-    foreign key (COD_PROJ) references PROJETO(COD_PROJ),
-    primary key(COD_FUNC, COD_PROJ)
+    foreign key (COD_PROJ) references PROJETO(COD_PROJ)
 );
 
 /* select * from Participa, Localizacao, dependente, funcionario, projeto, departamento */
