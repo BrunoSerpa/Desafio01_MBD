@@ -17,6 +17,9 @@ CREATE table PROJETO
     DAT_CAD date default(curdate()),
     foreign key(COD_DEPART) references DEPARTAMENTO(COD_DEPART)
 );
+alter table PROJETO add STATUS_PROJ int check(STATUS_PROJ in (1, 0)) not null;
+alter table PROJETO modify TITULO varchar(155) not null;
+alter table PROJETO rename column DAT_CAD to DATA_CADASTRO;
 
 CREATE table FUNCIONARIO
 (
