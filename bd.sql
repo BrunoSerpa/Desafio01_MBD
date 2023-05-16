@@ -1,5 +1,4 @@
 create DATABASE bdpratica05;
-
 USE bdpratica05;
 
 CREATE table DEPARTAMENTO
@@ -17,11 +16,7 @@ CREATE table PROJETO
     DAT_CAD date default(curdate()),
     foreign key(COD_DEPART) references DEPARTAMENTO(COD_DEPART)
 );
-alter table PROJETO add STATUS_PROJ int check(STATUS_PROJ="1" or STATUS_PROJ="0") not null;
-alter table PROJETO modify TITULO varchar(155) not null;
-alter table PROJETO rename column DAT_CAD to DATA_CADASTRO;
-
-
+alter table PROJETO add STATUS_PROJ int check(STATUS_PROJ="1" or STATUS_PROJ="0") not null, modify TITULO varchar(155) not null, rename column DAT_CAD to DATA_CADASTRO;
 create table ENDERECO
 (
 	COD_ENDE int auto_increment primary key,
@@ -32,7 +27,6 @@ create table ENDERECO
     RUA varchar(200) not null,
     COMPLEMENTO varchar(100)
 );
-
 CREATE table FUNCIONARIO
 (
     COD_FUNC int auto_increment primary key,
@@ -48,11 +42,7 @@ CREATE table FUNCIONARIO
     CONSTRAINT salMinimo CHECK(SALARIO > 1000.00),
     CONSTRAINT mf CHECK(Sexo = "M" or Sexo = "F")
 );
-alter table FUNCIONARIO modify ENDERECO int;
-alter table FUNCIONARIO rename column ENDERECO to COD_ENDE;
-alter table FUNCIONARIO add foreign key(COD_ENDE) references ENDERECO(COD_ENDE);
-alter table FUNCIONARIO drop constraint salMinimo;
-
+alter table FUNCIONARIO modify ENDERECO int, add foreign key(ENDERECO) references ENDERECO(COD_ENDE), drop constraint salMinimo;
 CREATE table DEPENDENTE
 (
     COD_FUNC int,
@@ -64,7 +54,6 @@ CREATE table DEPENDENTE
     CONSTRAINT familia CHECK(PARENTESCO = "PAI" or PARENTESCO = "MÃE" or PARENTESCO = "IRMAOS" or PARENTESCO = "FILHO")
 );
 alter table DEPENDENTE drop column PARENTESCO, drop constraint familia;
-
 CREATE table PARENTESCO(
 	COD_PARE int auto_increment primary key,
     DESCRICAO varchar(30) not null,
@@ -72,7 +61,6 @@ CREATE table PARENTESCO(
     foreign key (COD_DEPE) references DEPENDENTE(SEQ) ON DELETE CASCADE,
     CONSTRAINT familia CHECK(DESCRICAO = "PAI" or DESCRICAO = "MÃE" or DESCRICAO = "IRMAOS" or DESCRICAO = "FILHO")
 );
-select * from PARENTESCO;
 CREATE table LOCALIZACAO
 (
     COD_DEPART int,
@@ -80,7 +68,6 @@ CREATE table LOCALIZACAO
     foreign key(COD_DEPART) references DEPARTAMENTO(COD_DEPART),
     primary key(COD_DEPART, LOCAL)
 );
-
 CREATE table PARTICIPA
 (
 	COD_FUNC int,
