@@ -90,3 +90,4 @@ CREATE table PARTICIPA
     foreign key (COD_PROJ) references PROJETO(COD_PROJ),
     primary key(COD_FUNC, COD_PROJ)
 );
+rename table PARTICIPA to FUNC_PROJETO;
