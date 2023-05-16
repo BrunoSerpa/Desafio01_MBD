@@ -63,7 +63,16 @@ CREATE table DEPENDENTE
     foreign key (COD_FUNC) references FUNCIONARIO(COD_FUNC),
     CONSTRAINT familia CHECK(PARENTESCO = "PAI" or PARENTESCO = "MÃE" or PARENTESCO = "IRMAOS" or PARENTESCO = "FILHO")
 );
+alter table DEPENDENTE drop column PARENTESCO, drop constraint familia;
 
+CREATE table PARENTESCO(
+	COD_PARE int auto_increment primary key,
+    DESCRICAO varchar(30) not null,
+    COD_DEPE int,
+    foreign key (COD_DEPE) references DEPENDENTE(SEQ) ON DELETE CASCADE,
+    CONSTRAINT familia CHECK(DESCRICAO = "PAI" or DESCRICAO = "MÃE" or DESCRICAO = "IRMAOS" or DESCRICAO = "FILHO")
+);
+select * from PARENTESCO;
 CREATE table LOCALIZACAO
 (
     COD_DEPART int,
