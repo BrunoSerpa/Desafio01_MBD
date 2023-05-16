@@ -21,6 +21,18 @@ alter table PROJETO add STATUS_PROJ int check(STATUS_PROJ="1" or STATUS_PROJ="0"
 alter table PROJETO modify TITULO varchar(155) not null;
 alter table PROJETO rename column DAT_CAD to DATA_CADASTRO;
 
+
+create table ENDERECO
+(
+	COD_ENDE int auto_increment primary key,
+    BAIRRO varchar(200) not null,
+    CIDADE varchar(200) not null,
+    CEP char(8) not null,
+    ESTADO char(2) not null,
+    RUA varchar(200) not null,
+    COMPLEMENTO varchar(100)
+);
+
 CREATE table FUNCIONARIO
 (
     COD_FUNC int auto_increment primary key,
@@ -35,7 +47,11 @@ CREATE table FUNCIONARIO
     foreign key(COD_DEPART) references DEPARTAMENTO(COD_DEPART),
     CONSTRAINT salMinimo CHECK(SALARIO > 1000.00),
     CONSTRAINT mf CHECK(Sexo = "M" or Sexo = "F")
-); 
+);
+alter table FUNCIONARIO modify ENDERECO int;
+alter table FUNCIONARIO rename column ENDERECO to COD_ENDE;
+alter table FUNCIONARIO add foreign key(COD_ENDE) references ENDERECO(COD_ENDE);
+alter table FUNCIONARIO drop constraint salMinimo;
 
 CREATE table DEPENDENTE
 (
